@@ -7,10 +7,13 @@
 
 ## Quick Start
 
+> [!IMPORTANT]
+> **Linux/Mac is the prioritized platform** for this assignment. While Windows is supported via `run.bat`, we strongly recommend using a Unix-based environment (Linux, macOS, or WSL) for the best experience and to match the evaluation environment.
+
 ### 1. Build the Project
 Open a terminal in the project root and run:
 
-**Linux/Mac:**
+**Linux/Mac (Recommended):**
 ```bash
 ./run.sh build
 ```
@@ -25,7 +28,7 @@ Open a terminal in the project root and run:
 ### 2. Run the Interactive REPL
 This is the best way to explore the tool.
 
-**Linux/Mac:**
+**Linux/Mac (Recommended):**
 ```bash
 ./run.sh repl
 ```
