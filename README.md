@@ -18,42 +18,17 @@ A Java-based CLI tool to analyze Java codebases using **Functional Object-Orient
 
 This project demonstrates functional object-oriented programming by analyzing Java codebases. It leverages custom-built data structures (containers) that support both imperative operations and functional programming paradigms (map, filter, reduce). The analyzer reads, searches, sorts, and aggregates information from Java source files.
 
-## Functional-OO Approach
+## Project Documentation
 
-### Why Functional-OO?
+For a comprehensive explanation of the project's architecture, functional-OO design, and container usage, please refer to the main submission document:
 
-This project follows a **Functional Object-Oriented** design philosophy:
+👉 **[POPL Assignment Submission (popl_submission.md)](popl_submission.md)**
 
-1. **Object-Oriented Foundation**: 
-   - Clear class hierarchies with `ListContainer<T>` as abstract base
-   - Encapsulation of data structures and behaviors
-   - Polymorphism through abstract methods (`add`, `remove`, `peek`)
-   - Inheritance for code reuse across container types
-
-2. **Functional Programming Elements**:
-   - **Higher-order functions**: `GenericList` supports `map`, `filter`, `reduce`
-   - **Immutability focus**: Operations create new views rather than mutating state where possible
-   - **Declarative approach**: Commands focus on *what* to do, not *how* to do it
-   - **Function composition**: Complex operations built from simpler functional primitives
-   - **Transformers & Aggregators**:
-     - `map`: Transform data (e.g., File -> ClassInfo)
-     - `filter`: Select data (e.g., keep only public methods)
-     - `reduce`: Aggregate data (e.g., sum lines of code)
-     - `collect`: Gather results into specific containers
-
-3. **Separation of Concerns**:
-   - **What vs How**: Command classes specify *what* analysis to perform
-   - Core algorithms (parsing, scanning) handle *how* it's executed
-   - Container abstractions separate storage from usage semantics
-
-### Design Rationale
-
-**Why this approach was chosen:**
-- **Extensibility**: Easy to add new commands and analysis types
-- **Testability**: Pure functional operations are easier to test
-- **Maintainability**: Clear separation between data structures and business logic
-- **Performance**: Custom containers optimized for specific access patterns
-- **Learning**: Demonstrates both OO design patterns and functional programming concepts
+This document covers:
+-   **Functional-OO Approach**: How we blended paradigms.
+-   **Container Implementations**: Detailed usage of `GenericList`, `Stack`, `Queue`, etc.
+-   **Design Philosophy**: The "What" vs "How" separation.
+-   **Full Command List**: Summary of implemented features.
 
 ## Architecture & Design
 
@@ -76,225 +51,30 @@ This project follows a **Functional Object-Oriented** design philosophy:
 └─────────────────────────────────────────────────┘
 ```
 
-### Container Usage in Analyzer
+For details on the container implementations and algorithms, see `popl_submission.md`.
 
-1. **GenericList<T>**: Primary storage for indexed data
-   - Stores lists of `ClassInfo`, `MethodInfo`, `FieldInfo`
-   - Used for maintaining ordered collections with random access
-   - Supports functional operations for filtering and transforming results
+## File Structure
 
-2. **Queue<T>**: Breadth-First Search operations
-   - Directory traversal during file scanning
-   - Storing and processing grep match results
-   - FIFO processing of analysis tasks
+### Source Files (`src/main/java/com/`)
 
-3. **Stack<T>**: Command history management
-   - REPL mode maintains command history for recall
-   - LIFO access pattern for undo/history features
-
-4. **Deque<T>**: Double-ended operations
-   - Flexible insert/remove at both ends
-   - Used in certain parsing scenarios requiring bidirectional access
-
-5. **PriorityQueueCustom<T>**: Ordered aggregation
-   - Sorting files by keyword count (top-N queries)
-   - Sorting packages by class count
-   - Heap-based priority ordering for efficient aggregation
-
-## Container Implementations
-
-### ListContainer<T> (Abstract Base Class)
-
-**Purpose**: Common foundation for all containers
-
-**Protected Fields**:
-- `List<T> elements` - Backing storage
-- `int size` - Number of elements
-
-**Common APIs**:
-```java
-boolean isEmpty()           // O(1) - Check if empty
-int size()                  // O(1) - Get size
-void clear()                // O(n) - Remove all elements
-boolean update(int, T)      // O(1)/O(n) - Update at index
-boolean contains(T)         // O(n) - Check containment
-String toString()           // O(n) - String representation
-abstract void add(T)        // Defined by subclass
-abstract T remove()         // Defined by subclass
-abstract T peek()           // Defined by subclass
-```
-
-### GenericList<T>
-
-**Purpose**: Index-based list with functional operations
-
-**Key APIs**:
-```java
-void addLast(T)                          // O(1) amortized
-void addFirst(T)                         // O(n)
-void addAt(int index, T)                 // O(n)
-T removeAt(int index)                    // O(n)
-T get(int index)                         // O(1)
-void sort(Comparator<T>)                 // O(n log n) - Merge Sort
-GenericList<R> map(Function<T,R>)        // O(n) - Transform elements
-GenericList<T> filter(Predicate<T>)      // O(n) - Filter elements
-R reduce(R identity, BinaryOperator<R>)  // O(n) - Aggregate
-```
-
-**Algorithm**: Stable Merge Sort for ordering
-
-### Stack<T>
-
-**Purpose**: LIFO (Last In, First Out) operations
-
-**Key APIs**:
-```java
-void push(T)        // O(1) amortized
-T pop()             // O(1)
-T peek()            // O(1)
-```
-
-**Usage**: REPL command history
-
-### Queue<T>
-
-**Purpose**: FIFO (First In, First Out) operations
-
-**Key APIs**:
-```java
-void enqueue(T)     // O(1) amortized
-T dequeue()         // O(1)
-T peek()            // O(1)
-```
-
-**Usage**: BFS directory scanning, grep result processing
-
-### Deque<T>
-
-**Purpose**: Double-ended queue operations
-
-**Key APIs**:
-```java
-void addFirst(T)    // O(1)
-void addLast(T)     // O(1)
-T removeFirst()     // O(1)
-T removeLast()      // O(1)
-T peekFirst()       // O(1)
-T peekLast()        // O(1)
-```
-
-### PriorityQueueCustom<T>
-
-**Purpose**: Heap-based priority ordering
-
-**Key APIs**:
-```java
-void add(T)                             // O(log n)
-T remove()                              // O(log n)
-T peek()                                // O(1)
-PriorityQueueCustom(Comparator<T>)      // Constructor with custom ordering
-```
-
-**Algorithm**: Binary Heap with bubble-up and bubble-down operations
-
-## Algorithms Used
-
-### 1. Merge Sort (GenericList)
-- **Complexity**: O(n log n) time, O(n) space
-- **Properties**: Stable sorting algorithm
-- **Usage**: Sorting files, packages, keywords by count/name
-- **Implementation**: Recursive divide-and-conquer with merge operation
-
-### 2. Binary Heap Operations (PriorityQueueCustom)
-- **Complexity**: O(log n) insert/remove, O(1) peek
-- **Properties**: Min-heap or max-heap based on comparator
-- **Usage**: Top-N keyword extraction, priority-based aggregation
-- **Operations**: bubbleUp (heapify-up), bubbleDown (heapify-down)
-
-### 3. Breadth-First Search (Scanner)
-- **Complexity**: O(V + E) where V = directories, E = files
-- **Usage**: Directory traversal for finding Java files
-- **Implementation**: Queue-based iterative BFS
-
-### 4. Abstract Syntax Tree Parsing (Parser)
 #### analyzer/cli/
 - **Main.java**: Entry point, command routing, help system
 - **Command.java**: Interface for all command implementations
-- **AnalyzeCommand.java**: Scans and indexes directory
-- **ListCommand.java**: Lists classes/methods/variables with file locations
-- **GrepCommand.java**: Pattern search across codebase
-- **KeywordsCommand.java**: Keyword frequency analysis
-- **SortCommand.java**: Sort by keyword count or class count (supports both quoted and unquoted keywords)
-- **AggregateCommand.java**: Statistical aggregation of codebase
-- **MetricsCommand.java**: Detailed metrics for individual files
-- **ExportCommand.java**: Export results to JSON/CSV
-- **InspectCommand.java**: Deep inspection of specific class/file
-- **TopCommand.java**: Top-N classes by methods/fields using PriorityQueue
-- **ReplCommand.java**: Interactive REPL mode with history
+- ... (See `popl_submission.md` for full list)
 
 #### analyzer/core/
-- **Scanner.java**: BFS directory traversal, finds Java files
-  - Uses `Queue<File>` for breadth-first traversal
-  - Returns `GenericList<File>` of discovered files
-
-- **Parser.java**: Parses Java files using JavaParser
-  - Converts files to `ClassInfo` objects
-  - Extracts methods, fields, imports
-  - Returns `GenericList<ClassInfo>`
-
-- **Index.java**: In-memory index of codebase
-  - Stores `GenericList<ClassInfo>`
-  - Provides search and lookup capabilities
-  - Uses `PriorityQueueCustom` for top-N operations
-
-#### analyzer/model/
-- **ClassInfo.java**: Represents a Java class
-  - Contains methods, fields, package info
-  - Uses `GenericList` for method/field storage
-
-- **MethodInfo.java**: Represents a method
-  - Name, return type, parameters, modifiers
-
-- **FieldInfo.java**: Represents a field
-  - Name, type, modifiers
+- **Scanner.java**: BFS directory traversal
+- **Parser.java**: AST parsing
+- **Index.java**: In-memory index
 
 #### containers/
-- **ListContainer.java**: Abstract base for all containers
-- **GenericList.java**: Full-featured list with functional ops
-- **Queue.java**: FIFO queue
-- **Stack.java**: LIFO stack
-- **Deque.java**: Double-ended queue
-- **PriorityQueueCustom.java**: Binary heap priority queue
-
-### Test Files (`src/test/java/com/`)
-
-- **analyzer/ContainerUsageTest.java**: Integration tests
-- **containers/GenericListTest.java**: GenericList unit tests
-- **containers/QueueTest.java**: Queue unit tests
-- **containers/StackTest.java**: Stack unit tests
-- **containers/DequeTest.java**: Deque unit tests
-- **containers/PriorityQueueCustomTest.java**: Priority queue tests
-
-### Build & Configuration
-
-- **pom.xml**: Maven configuration (Java 11, JUnit, JavaParser, Gson)
-- **Makefile**: Build automation and convenience commands
-- **run.sh / run.bat**: Cross-platform execution scripts
-- **lib/**: Local JAR dependencies (gson, javaparser, junit)
+- **ListContainer.java**: Abstract base
+- **GenericList.java**: Functional list
+- **Queue.java**, **Stack.java**, **Deque.java**, **PriorityQueueCustom.java**
 
 ## Features
 
-- **Analyze**: Scans and indexes Java files in a directory
-- **List**: Lists classes (with file locations), methods (with signatures), and variables/fields from indexed code
-- **Find/Grep**: Search for identifiers or regex patterns
-- **Keywords**: Count and list top-N keywords with frequency
-- **Sort**: Sort files by keyword count or packages by class count
-- **Aggregate**: Show codebase statistics (classes, methods, LOC)
-- **Metrics**: Detailed metrics for individual files
-- **Inspect**: Deep dive into specific class or file with complete details
-- **Top**: Find top-N classes by methods, fields, or other metrics using PriorityQueue
-- **Export**: Export results to JSON or CSV formats
-- **REPL**: Interactive mode with command history using Stack
+See **[COMMANDS.md](COMMANDS.md)** for the full feature list and usage examples.
 
 ## Usage
 
