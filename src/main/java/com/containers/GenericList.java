@@ -133,4 +133,31 @@ public class GenericList<T> extends ListContainer<T> {
         for (int idx = l; idx <= r; idx++)
             elements.set(idx, tmp.get(idx));
     }
+    // Functional Extensions
+
+    public <R> GenericList<R> map(java.util.function.Function<T, R> mapper) {
+        GenericList<R> result = new GenericList<>();
+        for (T item : elements) {
+            result.add(mapper.apply(item));
+        }
+        return result;
+    }
+
+    public GenericList<T> filter(java.util.function.Predicate<T> predicate) {
+        GenericList<T> result = new GenericList<>();
+        for (T item : elements) {
+            if (predicate.test(item)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    public <R> R reduce(java.util.function.BiFunction<R, T, R> accumulator, R identity) {
+        R result = identity;
+        for (T item : elements) {
+            result = accumulator.apply(result, item);
+        }
+        return result;
+    }
 }
