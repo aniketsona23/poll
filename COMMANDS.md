@@ -350,22 +350,24 @@ Top 10 Keywords:
 
 **Syntax**:
 ```bash
+sort-by-keyword <keyword>
+# or with quotes (optional, automatically stripped)
 sort-by-keyword "<keyword>"
 ```
 
 **Examples**:
 ```bash
 # Find files with most TODO comments
-sort-by-keyword "TODO"
+sort-by-keyword TODO
 
 # Find files with most synchronized blocks
-sort-by-keyword "synchronized"
+sort-by-keyword synchronized
 
 # Find most complex files (by if count)
-sort-by-keyword "if"
+sort-by-keyword if
 
 # Find files with most classes
-sort-by-keyword "class"
+sort-by-keyword class
 ```
 
 **Output**:
@@ -918,7 +920,7 @@ Goodbye!
 make run
 > analyze --path ./src
 > grep "TODO"
-> sort-by-keyword "TODO"
+> sort-by-keyword TODO
 > export --format csv --output todos.csv
 ```
 
@@ -927,7 +929,7 @@ make run
 ```bash
 ./run.sh analyze --path ./src
 ./run.sh aggregate
-./run.sh sort-by-keyword "if"
+./run.sh sort-by-keyword if
 ./run.sh metrics Main.java
 ```
 
@@ -964,7 +966,7 @@ Top 10 Keywords:
 make run
 > analyze --path ./src
 > aggregate
-> sort-by-keyword "if"      # Complexity indicator
+> sort-by-keyword if      # Complexity indicator
 > metrics GenericList.java  # Detailed metrics
 ```
 
@@ -1075,6 +1077,13 @@ make exec CMD="list classes"
 
 **Error**: `Scanner closed`
 **Solution**: Fixed in latest version. Update ReplCommand.java if using old version.
+
+**Error**: `Unknown sort command: <keyword>` when using sort-by-keyword
+**Cause**: Argument parsing bug in older versions
+**Solution**: Fixed in latest version. The command now accepts keywords with or without quotes:
+- ✅ `sort-by-keyword TODO` (recommended)
+- ✅ `sort-by-keyword "TODO"` (also works)
+Rebuild the project with `make build` to apply the fix.
 
 **Error**: `NoSuchElementException` in REPL
 **Cause**: Trying to access empty history or empty queue

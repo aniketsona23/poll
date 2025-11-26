@@ -35,6 +35,11 @@ This project follows a **Functional Object-Oriented** design philosophy:
    - **Immutability focus**: Operations create new views rather than mutating state where possible
    - **Declarative approach**: Commands focus on *what* to do, not *how* to do it
    - **Function composition**: Complex operations built from simpler functional primitives
+   - **Transformers & Aggregators**:
+     - `map`: Transform data (e.g., File -> ClassInfo)
+     - `filter`: Select data (e.g., keep only public methods)
+     - `reduce`: Aggregate data (e.g., sum lines of code)
+     - `collect`: Gather results into specific containers
 
 3. **Separation of Concerns**:
    - **What vs How**: Command classes specify *what* analysis to perform
@@ -212,20 +217,6 @@ PriorityQueueCustom(Comparator<T>)      // Constructor with custom ordering
 - **Implementation**: Queue-based iterative BFS
 
 ### 4. Abstract Syntax Tree Parsing (Parser)
-- **Library**: JavaParser
-- **Complexity**: O(n) where n = file size
-- **Usage**: Extract classes, methods, fields from Java source
-- **Output**: Structured `ClassInfo` objects with metadata
-
-### 5. Functional Operations (GenericList)
-- **map**: O(n) - Transform each element
-- **filter**: O(n) - Select elements matching predicate
-- **reduce**: O(n) - Aggregate to single value
-
-## File Structure
-
-### Source Files (`src/main/java/com/`)
-
 #### analyzer/cli/
 - **Main.java**: Entry point, command routing, help system
 - **Command.java**: Interface for all command implementations
@@ -233,7 +224,7 @@ PriorityQueueCustom(Comparator<T>)      // Constructor with custom ordering
 - **ListCommand.java**: Lists classes/methods/variables with file locations
 - **GrepCommand.java**: Pattern search across codebase
 - **KeywordsCommand.java**: Keyword frequency analysis
-- **SortCommand.java**: Sort by keyword count or class count
+- **SortCommand.java**: Sort by keyword count or class count (supports both quoted and unquoted keywords)
 - **AggregateCommand.java**: Statistical aggregation of codebase
 - **MetricsCommand.java**: Detailed metrics for individual files
 - **ExportCommand.java**: Export results to JSON/CSV
@@ -307,141 +298,24 @@ PriorityQueueCustom(Comparator<T>)      // Constructor with custom ordering
 
 ## Usage
 
-### Prerequisites
-- Java 11+
-- Maven (wrapper included)
+For detailed instructions on how to build and run the project, please refer to the **[Run Guide](docs/Run_Guide.md)**.
 
-### Building and Running
+For a complete reference of all available commands, examples, and options, see **[COMMANDS.md](COMMANDS.md)**.
 
-**Using Make (Linux/Mac/Windows with Make):**
-```bash
-# Build the project
-make build
+### Quick Command Summary
 
-# Run in interactive mode
-make repl
-
-# Or use specific commands
-make analyze PATH=./testdata
-make list
-make grep PATTERN="ArrayList"
-make keywords
-make aggregate
-```
-
-**Using Scripts:**
-
-**Linux/Mac:**
-```bash
-./run.sh <command> [options]
-```
-
-**Windows:**
-```bat
-.\run.bat <command> [options]
-```
-
-### Commands
-
-- **Analyze**:
-  ```bash
-  ./run.sh analyze --path <directory>
-  # or
-  make analyze PATH=<directory>
-  ```
-
-- **List Classes** (with file locations):
-  ```bash
-  ./run.sh list classes
-  # or
-  make list
-  ```
-
-- **List Methods** (with signatures and LOC):
-  ```bash
-  ./run.sh list methods
-  ```
-
-- **List Variables/Fields**:
-  ```bash
-  ./run.sh list variables
-  # or
-  ./run.sh list fields
-  ```
-
-- **Grep**:
-  ```bash
-  ./run.sh grep "pattern"
-  # or
-  make grep PATTERN="pattern"
-  ```
-
-- **Inspect Class/File** (detailed information):
-  ```bash
-  ./run.sh inspect Main
-  # or
-  ./run.sh inspect Main.java
-  ```
-
-- **Top N Classes** (by methods or fields):
-  ```bash
-  ./run.sh top 5 methods
-  # or
-  ./run.sh top 10 fields
-  ```
-
-- **Keywords**:
-  ```bash
-  ./run.sh keywords
-  # or
-  make keywords
-  ```
-
-- **Sort by Keyword**:
-  ```bash
-  ./run.sh sort-by-keyword "TODO"
-  # or
-  make sort
-  ```
-
-- **Aggregate Stats**:
-  ```bash
-  ./run.sh aggregate
-  # or
-  make aggregate
-  ```
-
-- **Metrics for File**:
-  ```bash
-  ./run.sh metrics Main.java
-  # or
-  make metrics FILE=Main.java
-  ```
-
-- **Export Results**:
-  ```bash
-  ./run.sh export
-  # or
-  make export
-  ```
-
-- **Interactive Mode**:
-  ```bash
-  ./run.sh repl
-  # or
-  make run
-  ```
-
-**Inside REPL, try:**
-```bash
-> help
-> list classes
-> list methods
-> inspect Main
-> top 5 methods
-> top 10 fields
-> exit
-```
+- **analyze**: Scan and index a directory.
+- **list**: List classes, methods, or fields.
+- **grep**: Search for patterns in the codebase.
+- **keywords**: Show top frequent keywords.
+- **sort-by-keyword**: Sort files by keyword frequency.
+- **sort-by-class-count**: Sort packages by number of classes.
+- **aggregate**: Show overall codebase statistics.
+- **metrics**: Show detailed metrics for a specific file.
+- **inspect**: Deep dive into a class or file.
+- **top**: Show top N classes by metric (methods/fields).
+- **export**: Save results to JSON or CSV.
+- **repl**: Start interactive mode.
 
 ## Development
 
@@ -567,19 +441,32 @@ Low-level: Containers + Algorithms (how to store/process)
 ### Team Contributions
 
 **Aniket Sonawane (2022B3A70031G)**:
-- Project architecture and design
-- Container implementations (ListContainer, GenericList, PriorityQueueCustom)
-- Core analysis engine (Scanner, Parser, Index)
-- CLI framework and command implementations
-- Functional programming features (map, filter, reduce)
-- Build system and documentation
+- **Role**: Team Lead & Core Architect
+- **Contributions**: 
+  - Designed `ListContainer` hierarchy and `GenericList`.
+  - Implemented core functional operations (`map`, `filter`, `reduce`).
+  - Built the `Index` and `Scanner` logic.
 
 **Vanshaj Bhudolia (2022B3A70972G)**:
-- Additional container implementations (Stack, Queue, Deque)
-- Test suite development
-- REPL mode implementation
-- Command history functionality
-- Integration testing
+- **Role**: Container Specialist
+- **Contributions**:
+  - Implemented `Stack`, `Queue`, and `Deque` containers.
+  - Developed the REPL (Read-Eval-Print Loop) with command history.
+  - Wrote unit tests for container classes.
+
+**Vedant Kamath (2022B3A7xxxxG)**:
+- **Role**: Analysis Engine Developer
+- **Contributions**:
+  - Implemented `Parser` using JavaParser.
+  - Built `GrepCommand` and regex integration.
+  - Developed `InspectCommand` for deep-diving into classes.
+
+**Mayukh Saha (2022B3A7xxxxG)**:
+- **Role**: CLI & Algorithms Developer
+- **Contributions**:
+  - Implemented `PriorityQueueCustom` and Heap algorithms.
+  - Built `SortCommand`, `KeywordsCommand`, and `AggregateCommand`.
+  - Created documentation and build scripts (`Makefile`, `run.sh`).
 
 ## External Dependencies
 
