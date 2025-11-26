@@ -29,25 +29,16 @@ public class SortCommand implements Command {
 
     @Override
     public void execute(String[] args, Index index) {
-        // When invoked as "sort-by-keyword <keyword>", args[0] is the keyword
-        // When invoked as "sort-by-class-count", args is empty
-        // We need to check how we were invoked by looking at the calling context
+        // The command name has already been stripped by Main.java or ReplCommand
+        // For "sort-by-keyword <keyword>": args[0] is the keyword
+        // For "sort-by-class-count": args is empty or args[0] is not a keyword
         
-        // Determine which sort operation based on args
         if (args.length == 0) {
-            System.err.println("Usage: sort-by-keyword <keyword> | sort-by-class-count");
-            return;
-        }
-
-        // If first arg looks like a keyword (not a command), assume sort-by-keyword
-        String firstArg = args[0];
-        
-        // Check if this is the "sort-by-class-count" subcommand
-        if (firstArg.equals("sort-by-class-count")) {
+            // No arguments means sort-by-class-count
             sortByClassCount(index);
         } else {
-            // Otherwise, treat first argument as the keyword to search for
-            String keyword = firstArg;
+            // First argument is the keyword to search for
+            String keyword = args[0];
             // Remove quotes if present
             if (keyword.startsWith("\"") && keyword.endsWith("\"")) {
                 keyword = keyword.substring(1, keyword.length() - 1);
