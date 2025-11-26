@@ -52,6 +52,6 @@
 
 ### Afternoon (12:00 PM - 2:00 PM)
 - **Team**: Final review of deliverables.
-- **Aniket**: Created `README.md` and `COMMANDS.md`.
+- **Aniket**: Created `README.md` and `docs/COMMANDS.md`.
 - **Mayukh**: Created `Timeline.md` and `GenAI_Usage.md`.
 - **All**: Recorded demonstration video (planned).

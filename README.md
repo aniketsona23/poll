@@ -3,6 +3,7 @@
 A Java-based CLI tool to analyze Java codebases using **Functional Object-Oriented Programming** principles. Built with custom container implementations demonstrating advanced data structures and algorithms.
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [Functional-OO Approach](#functional-oo-approach)
 - [Architecture & Design](#architecture--design)
@@ -25,10 +26,11 @@ For a comprehensive explanation of the project's architecture, functional-OO des
 👉 **[POPL Assignment Submission (popl_submission.md)](popl_submission.md)**
 
 This document covers:
--   **Functional-OO Approach**: How we blended paradigms.
--   **Container Implementations**: Detailed usage of `GenericList`, `Stack`, `Queue`, etc.
--   **Design Philosophy**: The "What" vs "How" separation.
--   **Full Command List**: Summary of implemented features.
+
+- **Functional-OO Approach**: How we blended paradigms.
+- **Container Implementations**: Detailed usage of `GenericList`, `Stack`, `Queue`, etc.
+- **Design Philosophy**: The "What" vs "How" separation.
+- **Full Command List**: Summary of implemented features.
 
 ## Architecture & Design
 
@@ -51,6 +53,8 @@ This document covers:
 └─────────────────────────────────────────────────┘
 ```
 
+### Detailed UML Class Diagram
+
 For details on the container implementations and algorithms, see `popl_submission.md`.
 
 ## File Structure
@@ -58,29 +62,32 @@ For details on the container implementations and algorithms, see `popl_submissio
 ### Source Files (`src/main/java/com/`)
 
 #### analyzer/cli/
+
 - **Main.java**: Entry point, command routing, help system
 - **Command.java**: Interface for all command implementations
 - ... (See `popl_submission.md` for full list)
 
 #### analyzer/core/
+
 - **Scanner.java**: BFS directory traversal
 - **Parser.java**: AST parsing
 - **Index.java**: In-memory index
 
 #### containers/
+
 - **ListContainer.java**: Abstract base
 - **GenericList.java**: Functional list
 - **Queue.java**, **Stack.java**, **Deque.java**, **PriorityQueueCustom.java**
 
 ## Features
 
-See **[COMMANDS.md](COMMANDS.md)** for the full feature list and usage examples.
+See **[COMMANDS.md](docs/COMMANDS.md)** for the full feature list and usage examples.
 
 ## Usage
 
 For detailed instructions on how to build and run the project, please refer to the **[Run Guide](docs/Run_Guide.md)**.
 
-For a complete reference of all available commands, examples, and options, see **[COMMANDS.md](COMMANDS.md)**.
+For a complete reference of all available commands, examples, and options, see **[COMMANDS.md](docs/COMMANDS.md)**.
 
 ### Quick Command Summary
 
@@ -100,6 +107,7 @@ For a complete reference of all available commands, examples, and options, see *
 ## Development
 
 ### Building
+
 ```bash
 # Using Make
 make build
@@ -112,6 +120,7 @@ javac -cp "lib/*" -d build src/main/java/com/**/*.java
 ```
 
 ### Testing
+
 ```bash
 # Run all tests
 make test
@@ -126,6 +135,7 @@ mvn -Dtest=GenericListTest#testStableSort test
 ```
 
 ### Cleaning
+
 ```bash
 make clean    # Removes build/, JAR, and temporary files
 ```
@@ -145,20 +155,23 @@ This project fulfills the PoPL Assignment requirements (CS F301, Sem-I 2025-26):
 ### ✅ Required Deliverables
 
 1. **Chronological Development Log**: See `DEVLOG.md`
+
    - Timestamped design and development actions
    - Interpretation of specifications
    - GenAI assistance documentation
    - Implementation insights and decisions
 
 2. **Demonstration-Ready Bundle**:
+
    - Single command to build and run: `make run`
    - Complete source code in `src/`
    - All dependencies in `lib/`
    - Build scripts: `Makefile`, `pom.xml`, `run.sh`, `run.bat`
 
 3. **Documentation**:
+
    - This README with comprehensive architecture explanation
-   - `COMMANDS.md` with usage examples
+   - `docs/COMMANDS.md` with usage examples
    - `docs/` folder with assignment specifications
    - Inline code documentation
 
@@ -183,6 +196,7 @@ This project fulfills the PoPL Assignment requirements (CS F301, Sem-I 2025-26):
 **Task**: Analyze a directory of Java files and list keywords in decreasing order of frequency.
 
 **Solution**:
+
 ```bash
 # Analyze the directory
 make run
@@ -200,16 +214,19 @@ make run
 ### Functional-OO Implementation
 
 **What (Declarative)**:
-- Commands specify *what* analysis to perform
-- Functional operations describe *what* transformations to apply
-- Container APIs define *what* behaviors are available
+
+- Commands specify _what_ analysis to perform
+- Functional operations describe _what_ transformations to apply
+- Container APIs define _what_ behaviors are available
 
 **How (Implementation)**:
-- Core engine handles *how* files are scanned and parsed
-- Containers implement *how* data is stored and accessed
-- Algorithms handle *how* sorting and aggregation occur
+
+- Core engine handles _how_ files are scanned and parsed
+- Containers implement _how_ data is stored and accessed
+- Algorithms handle _how_ sorting and aggregation occur
 
 **Abstraction Layers**:
+
 ```
 High-level: Commands (what user wants)
     ↓
@@ -221,13 +238,15 @@ Low-level: Containers + Algorithms (how to store/process)
 ### Team Contributions
 
 **Aniket Sonawane (2022B3A70031G)**:
+
 - **Role**: Team Lead & Core Architect
-- **Contributions**: 
+- **Contributions**:
   - Designed `ListContainer` hierarchy and `GenericList`.
   - Implemented core functional operations (`map`, `filter`, `reduce`).
   - Built the `Index` and `Scanner` logic.
 
 **Vanshaj Bhudolia (2022B3A70972G)**:
+
 - **Role**: Container Specialist
 - **Contributions**:
   - Implemented `Stack`, `Queue`, and `Deque` containers.
@@ -235,6 +254,7 @@ Low-level: Containers + Algorithms (how to store/process)
   - Wrote unit tests for container classes.
 
 **Vedant Kamath (2022B3A7xxxxG)**:
+
 - **Role**: Analysis Engine Developer
 - **Contributions**:
   - Implemented `Parser` using JavaParser.
@@ -242,6 +262,7 @@ Low-level: Containers + Algorithms (how to store/process)
   - Developed `InspectCommand` for deep-diving into classes.
 
 **Mayukh Saha (2022B3A7xxxxG)**:
+
 - **Role**: CLI & Algorithms Developer
 - **Contributions**:
   - Implemented `PriorityQueueCustom` and Heap algorithms.
@@ -253,11 +274,13 @@ Low-level: Containers + Algorithms (how to store/process)
 ### Libraries (in `lib/`)
 
 1. **JavaParser (3.26.0)**:
+
    - Purpose: Parse Java source files
    - Usage: Extract AST (Abstract Syntax Tree)
    - API: `StaticJavaParser.parse(File)`
 
 2. **Gson (2.11.0)**:
+
    - Purpose: JSON serialization/deserialization
    - Usage: Export command results to JSON
    - API: `Gson.toJson()`, `Gson.fromJson()`
@@ -278,48 +301,52 @@ Low-level: Containers + Algorithms (how to store/process)
 
 ### Time Complexities
 
-| Operation | Container | Complexity |
-|-----------|-----------|------------|
-| Add | Stack | O(1) amortized |
-| Add | Queue | O(1) amortized |
-| Add | GenericList (end) | O(1) amortized |
-| Add | PriorityQueue | O(log n) |
-| Remove | Stack | O(1) |
-| Remove | Queue | O(1) |
-| Remove | GenericList (end) | O(1) |
-| Remove | PriorityQueue | O(log n) |
-| Get by index | GenericList | O(1) |
-| Sort | GenericList | O(n log n) |
-| Search | All | O(n) |
-| Peek | All | O(1) |
+| Operation    | Container         | Complexity     |
+| ------------ | ----------------- | -------------- |
+| Add          | Stack             | O(1) amortized |
+| Add          | Queue             | O(1) amortized |
+| Add          | GenericList (end) | O(1) amortized |
+| Add          | PriorityQueue     | O(log n)       |
+| Remove       | Stack             | O(1)           |
+| Remove       | Queue             | O(1)           |
+| Remove       | GenericList (end) | O(1)           |
+| Remove       | PriorityQueue     | O(log n)       |
+| Get by index | GenericList       | O(1)           |
+| Sort         | GenericList       | O(n log n)     |
+| Search       | All               | O(n)           |
+| Peek         | All               | O(1)           |
 
 ### Space Complexities
 
-| Container | Space | Notes |
-|-----------|-------|-------|
-| GenericList | O(n) | Array-backed |
-| Stack | O(n) | Array-backed |
-| Queue | O(n) | LinkedList-backed |
-| Deque | O(n) | LinkedList-backed |
-| PriorityQueue | O(n) | Array-backed heap |
+| Container     | Space | Notes             |
+| ------------- | ----- | ----------------- |
+| GenericList   | O(n)  | Array-backed      |
+| Stack         | O(n)  | Array-backed      |
+| Queue         | O(n)  | LinkedList-backed |
+| Deque         | O(n)  | LinkedList-backed |
+| PriorityQueue | O(n)  | Array-backed heap |
 
 ## Modularity & Design Quality
 
 ### Metrics (from Assignment Evaluation)
 
 **Component A** (One module per type): 96/96
+
 - Each container in separate file
 - One class per module
 
 **Component B** (Single header per type): 24/24
+
 - Clean class definitions
 - Clear interfaces
 
 **Component C** (No imperative code in headers): 0/12
+
 - Implementation note: Java doesn't separate headers/implementation
 - All logic in class files (standard Java practice)
 
 **Component D** (Minimal change if storage changes): 4/4
+
 - Abstract ListContainer allows backing storage flexibility
 - Subclasses can override storage choice
 
@@ -337,9 +364,6 @@ Low-level: Containers + Algorithms (how to store/process)
 
 ### Common Issues
 
-**Issue**: `Scanner closed` exception in REPL
-**Fix**: Scanner now properly closed after loop exits (fixed in ReplCommand.java)
-
 **Issue**: Unknown command in REPL
 **Fix**: Type `help` to see all available commands
 
@@ -349,27 +373,6 @@ Low-level: Containers + Algorithms (how to store/process)
 **Issue**: Tests fail
 **Fix**: Run `make clean` then `make test`
 
-## Future Enhancements
-
-- [ ] Iterator implementation for all containers
-- [ ] Parallel processing for large codebases
-- [ ] Web UI for visualization
-- [ ] Git integration for version analysis
-- [ ] Code complexity metrics (cyclomatic complexity)
-- [ ] Dependency graph generation
-- [ ] Performance benchmarking tools
-
-## License
-
-Academic project for CS F301 (PoPL) - BITS Pilani
-
-## References
-
-- Assignment specification: `docs/Newassignment.md`
-- Container design: `docs/oldAssignment_doc.md`
-- JavaParser documentation: https://javaparser.org/
-- Functional programming in Java: https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html
-
 ---
 
-**For detailed command usage, see `COMMANDS.md`**
+**For detailed command usage, see `docs/COMMANDS.md`**

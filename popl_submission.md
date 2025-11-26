@@ -40,7 +40,7 @@ We strictly separated the *intent* from the *implementation*:
 ## Project Documentation Links
 Here are the detailed documents for this submission:
 
--   **[User Guide & Commands](COMMANDS.md)**: Complete reference for all CLI commands.
+-   **[User Guide & Commands](docs/COMMANDS.md)**: Complete reference for all CLI commands.
 -   **[Run Guide](docs/Run_Guide.md)**: Instructions for building and running the project.
 -   **[Development Timeline](docs/Timeline.md)**: A chronological log of our 2-day implementation sprint.
 -   **[GenAI Usage Report](docs/GenAI_Usage.md)**: How we used AI tools to assist development.
