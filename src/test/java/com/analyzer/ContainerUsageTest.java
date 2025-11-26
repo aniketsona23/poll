@@ -7,11 +7,9 @@ import com.analyzer.model.ClassInfo;
 import com.containers.GenericList;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContainerUsageTest {
 

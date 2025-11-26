@@ -26,25 +26,14 @@ public class ReplCommand implements Command {
             if (line.equals("exit"))
                 break;
 
+            if (line.equals("help")) {
+                printReplHelp();
+                continue;
+            }
+
             if (line.equals("history")) {
-                // Show history (Stack doesn't support iteration easily without popping in
-                // strict sense,
-                // but our Stack extends ListContainer so we can iterate elements if we cast or
-                // access protected)
-                // But let's just pop and print for demo? No, that destroys history.
-                // Our Stack extends ListContainer, so it has 'elements'.
-                // But 'elements' is protected. We can't access it from here unless we are in
-                // same package.
-                // We are in com.analyzer.cli, Stack is in com.containers.
-                // So we can only use public API: push, pop, peek.
-                // To display history without destroying it, we'd need a different API or just
-                // not show it this way.
-                // However, the assignment asks to USE the stack.
-                // Let's just push commands to it.
+
                 System.out.println("History (last command on top):");
-                // We can't iterate stack without popping.
-                // So we will just say "History stored in Stack".
-                // Or we can pop everything to a temp stack and push back.
                 Stack<String> temp = new Stack<>();
                 while (!history.isEmpty()) {
                     String cmd = history.pop();
@@ -65,9 +54,6 @@ public class ReplCommand implements Command {
             String cmdName = parts[0];
             String[] cmdArgs = Arrays.copyOfRange(parts, 1, parts.length);
 
-            // We need access to the command map from Main, or we can just instantiate
-            // commands.
-            // For simplicity, let's switch-case or create new instances.
             Command cmd = null;
             switch (cmdName) {
                 case "analyze":
@@ -82,8 +68,28 @@ public class ReplCommand implements Command {
                 case "keywords":
                     cmd = new KeywordsCommand();
                     break;
+                case "aggregate":
+                    cmd = new AggregateCommand();
+                    break;
+                case "metrics":
+                    cmd = new MetricsCommand();
+                    break;
+                case "export":
+                    cmd = new ExportCommand();
+                    break;
+                case "inspect":
+                    cmd = new InspectCommand();
+                    break;
+                case "top":
+                    cmd = new TopCommand();
+                    break;
+                case "sort-by-keyword":
+                case "sort-by-class-count":
+                    cmd = new SortCommand();
+                    break;
                 default:
                     System.out.println("Unknown command: " + cmdName);
+                    System.out.println("Type 'help' for available commands.");
             }
 
             if (cmd != null) {
@@ -95,5 +101,43 @@ public class ReplCommand implements Command {
                 }
             }
         }
+        
+        scanner.close();
+    }
+
+    private void printReplHelp() {
+        System.out.println();
+        System.out.println("╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║           REPL Mode - Available Commands                     ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝");
+        System.out.println();
+        System.out.println("ANALYSIS COMMANDS:");
+        System.out.println("  list classes           - List all classes with file locations");
+        System.out.println("  list methods           - List all methods with signatures");
+        System.out.println("  list variables         - List all fields/variables");
+        System.out.println("  grep <pattern>         - Search for pattern");
+        System.out.println("  keywords               - Show keyword statistics");
+        System.out.println("  aggregate              - Show codebase statistics");
+        System.out.println("  metrics <filename>     - Show metrics for specific file");
+        System.out.println();
+        System.out.println("INSPECTION:");
+        System.out.println("  inspect <class/file>   - Detailed info about class or file");
+        System.out.println("                           Example: inspect Main");
+        System.out.println("  top <N> <metric>       - Top N classes by metric");
+        System.out.println("                           Example: top 5 methods");
+        System.out.println("                           Example: top 10 fields");
+        System.out.println();
+        System.out.println("SORTING:");
+        System.out.println("  sort-by-keyword <kw>   - Sort files by keyword count");
+        System.out.println("  sort-by-class-count    - Sort packages by class count");
+        System.out.println();
+        System.out.println("EXPORT:");
+        System.out.println("  export                 - Export results to JSON/CSV");
+        System.out.println();
+        System.out.println("REPL COMMANDS:");
+        System.out.println("  help                   - Show this help message");
+        System.out.println("  history                - Show command history");
+        System.out.println("  exit                   - Exit REPL mode");
+        System.out.println();
     }
 }

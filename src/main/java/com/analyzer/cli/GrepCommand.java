@@ -6,7 +6,6 @@ import com.containers.GenericList;
 import com.containers.Queue;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -25,10 +24,6 @@ public class GrepCommand implements Command {
         Queue<String> matches = new Queue<>();
 
         GenericList<ClassInfo> classes = index.getClasses();
-        // Naive approach: re-read files based on class info or just scan all files if
-        // we had them.
-        // Since Index only stores ClassInfo, we might miss non-class files.
-        // But for this assignment, let's iterate over unique files in the index.
 
         GenericList<String> processedFiles = new GenericList<>();
 

@@ -1,0 +1,6 @@
+*.txt
+*.json
+build
+.mvn
+.vscode
+target

@@ -29,24 +29,30 @@ public class SortCommand implements Command {
 
     @Override
     public void execute(String[] args, Index index) {
+        // When invoked as "sort-by-keyword <keyword>", args[0] is the keyword
+        // When invoked as "sort-by-class-count", args is empty
+        // We need to check how we were invoked by looking at the calling context
+        
+        // Determine which sort operation based on args
         if (args.length == 0) {
             System.err.println("Usage: sort-by-keyword <keyword> | sort-by-class-count");
             return;
         }
 
-        String subCmd = args[0];
-        if (subCmd.startsWith("sort-by-keyword")) {
-            // sort-by-keyword <keyword>
-            if (args.length < 2) {
-                System.err.println("Usage: sort-by-keyword <keyword>");
-                return;
-            }
-            String keyword = args[1];
-            sortByKeyword(index, keyword);
-        } else if (subCmd.equals("sort-by-class-count")) {
+        // If first arg looks like a keyword (not a command), assume sort-by-keyword
+        String firstArg = args[0];
+        
+        // Check if this is the "sort-by-class-count" subcommand
+        if (firstArg.equals("sort-by-class-count")) {
             sortByClassCount(index);
         } else {
-            System.err.println("Unknown sort command: " + subCmd);
+            // Otherwise, treat first argument as the keyword to search for
+            String keyword = firstArg;
+            // Remove quotes if present
+            if (keyword.startsWith("\"") && keyword.endsWith("\"")) {
+                keyword = keyword.substring(1, keyword.length() - 1);
+            }
+            sortByKeyword(index, keyword);
         }
     }
 
@@ -104,12 +110,6 @@ public class SortCommand implements Command {
         // Rank packages by number of classes
         GenericList<ClassInfo> classes = index.getClasses();
         // Map package -> count
-        // Since we don't have a Map container, we can use a list of pairs and update
-        // manually?
-        // Or just use Java Map for transient aggregation as allowed?
-        // "Do not use java.util collections for main data storage — only for transient
-        // helper operations if absolutely necessary"
-        // Aggregation is transient.
 
         java.util.Map<String, Integer> packageCounts = new java.util.HashMap<>();
         for (int i = 0; i < classes.size(); i++) {

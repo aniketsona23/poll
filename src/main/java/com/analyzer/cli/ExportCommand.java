@@ -34,10 +34,7 @@ public class ExportCommand implements Command {
 
     private void exportJson(Index index, String outFile) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        // GenericList might not serialize perfectly with Gson if it doesn't have
-        // standard List fields or annotations.
-        // But Gson usually serializes fields. GenericList has 'elements' (ArrayList).
-        // It should work fine.
+
         try (FileWriter writer = new FileWriter(outFile)) {
             gson.toJson(index.getClasses(), writer);
             System.out.println("Exported JSON to " + outFile);
