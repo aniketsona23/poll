@@ -54,7 +54,6 @@ public class Deque<T> extends ListContainer<T> {
         return ((LinkedList<T>) elements).getLast();
     }
 
-    // default add/remove/peek map to back/front semantics:
     @Override
     public void add(T element) {
         addLast(element);

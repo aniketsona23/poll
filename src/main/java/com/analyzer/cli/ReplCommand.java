@@ -101,7 +101,7 @@ public class ReplCommand implements Command {
                 }
             }
         }
-        
+
         scanner.close();
     }
 

@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Stack<T> extends ListContainer<T> {
 
     public Stack() {
-        super(); // array-backed is fine for stack
+        super();
     }
 
     public void push(T element) {
@@ -32,7 +32,6 @@ public class Stack<T> extends ListContainer<T> {
         return elements.get(size - 1);
     }
 
-    // ListContainer API mappings
     @Override
     public void add(T element) {
         push(element);

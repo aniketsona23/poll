@@ -14,8 +14,7 @@ import java.util.Objects;
  * with java.util.PriorityQueue.
  */
 public class PriorityQueueCustom<T> extends ListContainer<T> {
-    private final Comparator<? super T> comparator; // null means natural Comparable
-    // We'll use elements as the heap array
+    private final Comparator<? super T> comparator;
 
     public PriorityQueueCustom() {
         this(null);
@@ -29,7 +28,6 @@ public class PriorityQueueCustom<T> extends ListContainer<T> {
     private int compare(T a, T b) {
         if (comparator != null)
             return comparator.compare(a, b);
-        // natural ordering
         @SuppressWarnings("unchecked")
         Comparable<? super T> ca = (Comparable<? super T>) a;
         return ca.compareTo(b);
@@ -47,7 +45,6 @@ public class PriorityQueueCustom<T> extends ListContainer<T> {
     public T remove() {
         if (isEmpty())
             throw new NoSuchElementException("remove from empty PriorityQueue");
-        // root is element 0
         T root = elements.get(0);
         T last = elements.remove(size - 1);
         size--;
@@ -71,7 +68,7 @@ public class PriorityQueueCustom<T> extends ListContainer<T> {
             int parent = (i - 1) / 2;
             T cur = elements.get(i);
             T par = elements.get(parent);
-            if (compare(cur, par) < 0) { // cur has higher priority (min-heap)
+            if (compare(cur, par) < 0) {
                 swap(i, parent);
                 i = parent;
             } else {

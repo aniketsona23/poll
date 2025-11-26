@@ -44,7 +44,6 @@ public class Main {
 
         String[] commandArgs = Arrays.copyOfRange(args, 1, args.length);
 
-        // Global flags parsing (simplified)
         String path = ".";
         for (int i = 0; i < commandArgs.length; i++) {
             if (commandArgs[i].equals("--path") && i + 1 < commandArgs.length) {
@@ -52,7 +51,6 @@ public class Main {
             }
         }
 
-        // Build Index
         System.out.println("Scanning and indexing...");
         Scanner scanner = new Scanner();
         GenericList<File> files = scanner.scan(path);

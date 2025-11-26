@@ -22,24 +22,16 @@ public class SortCommand implements Command {
 
         @Override
         public int compareTo(ItemCount other) {
-            // Max-heap logic: reverse natural order
             return Integer.compare(this.count, other.count);
         }
     }
 
     @Override
     public void execute(String[] args, Index index) {
-        // The command name has already been stripped by Main.java or ReplCommand
-        // For "sort-by-keyword <keyword>": args[0] is the keyword
-        // For "sort-by-class-count": args is empty or args[0] is not a keyword
-        
         if (args.length == 0) {
-            // No arguments means sort-by-class-count
             sortByClassCount(index);
         } else {
-            // First argument is the keyword to search for
             String keyword = args[0];
-            // Remove quotes if present
             if (keyword.startsWith("\"") && keyword.endsWith("\"")) {
                 keyword = keyword.substring(1, keyword.length() - 1);
             }
@@ -49,10 +41,6 @@ public class SortCommand implements Command {
 
     private void sortByKeyword(Index index, String keyword) {
         GenericList<ClassInfo> classes = index.getClasses();
-        // We want to sort FILES by keyword count.
-        // Map file -> count
-        // Use PriorityQueueCustom for top-N (say 10)
-
         PriorityQueueCustom<ItemCount> pq = new PriorityQueueCustom<>((a, b) -> Integer.compare(b.count, a.count));
         GenericList<String> processedFiles = new GenericList<>();
 
@@ -73,7 +61,6 @@ public class SortCommand implements Command {
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    // Simple count
                     int lastIndex = 0;
                     while ((lastIndex = line.indexOf(keyword, lastIndex)) != -1) {
                         count++;
@@ -98,10 +85,7 @@ public class SortCommand implements Command {
     }
 
     private void sortByClassCount(Index index) {
-        // Rank packages by number of classes
         GenericList<ClassInfo> classes = index.getClasses();
-        // Map package -> count
-
         java.util.Map<String, Integer> packageCounts = new java.util.HashMap<>();
         for (int i = 0; i < classes.size(); i++) {
             String pkg = classes.get(i).getPackageName();

@@ -49,10 +49,9 @@ public abstract class ListContainer<T> {
                 this.getClass().getSimpleName(), size, elements.toString());
     }
 
-    // Concrete classes must implement these to define their policy
     public abstract void add(T element);
 
-    public abstract T remove(); // remove according to policy
+    public abstract T remove();
 
-    public abstract T peek(); // peek according to policy
+    public abstract T peek();
 }

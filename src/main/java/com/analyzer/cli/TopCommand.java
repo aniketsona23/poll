@@ -27,7 +27,7 @@ public class TopCommand implements Command {
         }
 
         String metric = args[1];
-        
+
         if (metric.equals("methods")) {
             topByMethods(index, n);
         } else if (metric.equals("fields") || metric.equals("variables")) {
@@ -40,29 +40,29 @@ public class TopCommand implements Command {
 
     private void topByMethods(Index index, int n) {
         GenericList<ClassInfo> classes = index.getClasses();
-        
+
         // Use PriorityQueueCustom with max-heap (reversed comparator)
         Comparator<ClassInfo> methodComparator = Comparator.comparingInt(ClassInfo::getMethodCount).reversed();
         PriorityQueueCustom<ClassInfo> pq = new PriorityQueueCustom<>(methodComparator);
-        
+
         // Add all classes to priority queue
         for (int i = 0; i < classes.size(); i++) {
             pq.add(classes.get(i));
         }
-        
+
         System.out.println("╔════════════════════════════════════════════════════════════════╗");
         System.out.println("║              Top " + n + " Classes by Method Count                     ║");
         System.out.println("╚════════════════════════════════════════════════════════════════╝");
         System.out.println();
-        
+
         int count = 0;
         while (!pq.isEmpty() && count < n) {
             ClassInfo c = pq.remove();
             count++;
-            System.out.printf("%2d. %-45s : %3d methods\n", 
-                count, 
-                c.getPackageName() + "." + c.getName(),
-                c.getMethodCount());
+            System.out.printf("%2d. %-45s : %3d methods\n",
+                    count,
+                    c.getPackageName() + "." + c.getName(),
+                    c.getMethodCount());
             System.out.printf("    File: %s\n", extractFileName(c.getFilePath()));
         }
         System.out.println();
@@ -70,36 +70,37 @@ public class TopCommand implements Command {
 
     private void topByFields(Index index, int n) {
         GenericList<ClassInfo> classes = index.getClasses();
-        
+
         // Use PriorityQueueCustom with max-heap (reversed comparator)
         Comparator<ClassInfo> fieldComparator = Comparator.comparingInt(ClassInfo::getFieldCount).reversed();
         PriorityQueueCustom<ClassInfo> pq = new PriorityQueueCustom<>(fieldComparator);
-        
+
         // Add all classes to priority queue
         for (int i = 0; i < classes.size(); i++) {
             pq.add(classes.get(i));
         }
-        
+
         System.out.println("╔════════════════════════════════════════════════════════════════╗");
         System.out.println("║              Top " + n + " Classes by Field Count                      ║");
         System.out.println("╚════════════════════════════════════════════════════════════════╝");
         System.out.println();
-        
+
         int count = 0;
         while (!pq.isEmpty() && count < n) {
             ClassInfo c = pq.remove();
             count++;
-            System.out.printf("%2d. %-45s : %3d fields\n", 
-                count, 
-                c.getPackageName() + "." + c.getName(),
-                c.getFieldCount());
+            System.out.printf("%2d. %-45s : %3d fields\n",
+                    count,
+                    c.getPackageName() + "." + c.getName(),
+                    c.getFieldCount());
             System.out.printf("    File: %s\n", extractFileName(c.getFilePath()));
         }
         System.out.println();
     }
 
     private String extractFileName(String filePath) {
-        if (filePath == null) return "Unknown";
+        if (filePath == null)
+            return "Unknown";
         int lastSeparator = Math.max(filePath.lastIndexOf('/'), filePath.lastIndexOf('\\'));
         return lastSeparator >= 0 ? filePath.substring(lastSeparator + 1) : filePath;
     }

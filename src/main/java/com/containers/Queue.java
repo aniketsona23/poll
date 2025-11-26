@@ -10,7 +10,6 @@ import java.util.Objects;
 public class Queue<T> extends ListContainer<T> {
 
     public Queue() {
-        // replace backing with LinkedList for O(1) head/tail ops
         this.elements = new LinkedList<>();
         this.size = 0;
     }

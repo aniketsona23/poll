@@ -24,25 +24,13 @@ public class KeywordsCommand implements Command {
 
         @Override
         public int compareTo(KeywordCount other) {
-            // Reverse order for max-heap behavior if using natural ordering,
-            // BUT PriorityQueueCustom is min-heap by default.
-            // We want top-N frequent, so we want the SMALLEST count at the root to evict
-            // it?
-            // Or we want to extract max?
-            // If we want to print top-N, we can put all in a Max-Heap and extract N times.
-            // Or use a Min-Heap of size N to keep the top N.
-
-            // Let's use a Max-Heap to extract top N easily.
-            // PriorityQueueCustom is min-heap by default.
-            // So we need a comparator that reverses the order.
             return Integer.compare(this.count, other.count);
         }
     }
 
     @Override
     public void execute(String[] args, Index index) {
-        int topN = 10; // default
-        // Parse args for --top N (omitted for brevity)
+        int topN = 10;
 
         Map<String, Integer> counts = new HashMap<>();
         GenericList<ClassInfo> classes = index.getClasses();
@@ -67,7 +55,7 @@ public class KeywordsCommand implements Command {
                 while ((line = reader.readLine()) != null) {
                     String[] words = line.split("\\W+");
                     for (String word : words) {
-                        if (word.length() > 2) { // simple filter
+                        if (word.length() > 2) {
                             counts.put(word, counts.getOrDefault(word, 0) + 1);
                         }
                     }
@@ -77,10 +65,7 @@ public class KeywordsCommand implements Command {
             }
         }
 
-        // 2. Use PriorityQueueCustom to find top N
-        // We want a Max-Heap, so we pass a comparator that reverses natural order
-        // (which is count ascending)
-        // So (a, b) -> b.count - a.count
+        // Use max-heap to find top N keywords
         PriorityQueueCustom<KeywordCount> pq = new PriorityQueueCustom<>((a, b) -> Integer.compare(b.count, a.count));
 
         for (Map.Entry<String, Integer> entry : counts.entrySet()) {

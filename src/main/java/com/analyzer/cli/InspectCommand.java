@@ -24,12 +24,12 @@ public class InspectCommand implements Command {
         for (int i = 0; i < classes.size(); i++) {
             ClassInfo c = classes.get(i);
             String fileName = extractFileName(c.getFilePath());
-            
-            if (c.getName().equals(target) || 
-                c.getName().equalsIgnoreCase(target) ||
-                fileName.equals(target) ||
-                fileName.equalsIgnoreCase(target) ||
-                (c.getPackageName() + "." + c.getName()).equals(target)) {
+
+            if (c.getName().equals(target) ||
+                    c.getName().equalsIgnoreCase(target) ||
+                    fileName.equals(target) ||
+                    fileName.equalsIgnoreCase(target) ||
+                    (c.getPackageName() + "." + c.getName()).equals(target)) {
                 found = c;
                 break;
             }
@@ -49,20 +49,20 @@ public class InspectCommand implements Command {
         System.out.println("║                    Class Inspection                            ║");
         System.out.println("╚════════════════════════════════════════════════════════════════╝");
         System.out.println();
-        
+
         System.out.println("Class Name:    " + c.getName());
         System.out.println("Package:       " + c.getPackageName());
         System.out.println("Full Name:     " + c.getPackageName() + "." + c.getName());
         System.out.println("File:          " + c.getFilePath());
         System.out.println();
-        
+
         System.out.println("═══════════════════════════════════════════════════════════════");
         System.out.println("                         Statistics");
         System.out.println("═══════════════════════════════════════════════════════════════");
         System.out.println("Total Methods: " + c.getMethodCount());
         System.out.println("Total Fields:  " + c.getFieldCount());
         System.out.println();
-        
+
         // List all fields
         if (c.getFieldCount() > 0) {
             System.out.println("───────────────────────────────────────────────────────────────");
@@ -75,25 +75,26 @@ public class InspectCommand implements Command {
             }
             System.out.println();
         }
-        
+
         // List all methods
         if (c.getMethodCount() > 0) {
             System.out.println("───────────────────────────────────────────────────────────────");
             System.out.println("Methods (" + c.getMethodCount() + "):");
             System.out.println("───────────────────────────────────────────────────────────────");
             GenericList<MethodInfo> methods = c.getMethods();
-            
+
             int totalLoc = 0;
             for (int i = 0; i < methods.size(); i++) {
                 MethodInfo m = methods.get(i);
                 totalLoc += m.getLoc();
-                
+
                 System.out.printf("  %2d. %s %s(", (i + 1), m.getReturnType(), m.getName());
-                
+
                 GenericList<String> params = m.getParameters();
                 for (int j = 0; j < params.size(); j++) {
                     System.out.print(params.get(j));
-                    if (j < params.size() - 1) System.out.print(", ");
+                    if (j < params.size() - 1)
+                        System.out.print(", ");
                 }
                 System.out.println(")");
                 System.out.printf("      LOC: %d, Line: %d\n", m.getLoc(), m.getStartLine());
@@ -104,12 +105,13 @@ public class InspectCommand implements Command {
                 System.out.printf("Average LOC per Method: %.1f\n", (double) totalLoc / c.getMethodCount());
             }
         }
-        
+
         System.out.println("╚════════════════════════════════════════════════════════════════╝");
     }
 
     private String extractFileName(String filePath) {
-        if (filePath == null) return "Unknown";
+        if (filePath == null)
+            return "Unknown";
         int lastSeparator = Math.max(filePath.lastIndexOf('/'), filePath.lastIndexOf('\\'));
         return lastSeparator >= 0 ? filePath.substring(lastSeparator + 1) : filePath;
     }

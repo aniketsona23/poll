@@ -51,9 +51,5 @@ public class MetricsCommand implements Command {
         System.out.println("Classes: " + fileClasses);
         System.out.println("Methods: " + fileMethods);
         System.out.println("Longest Method: " + longestMethodName + " (" + maxMethodLoc + " LOC)");
-        // Note: Comment ratio requires raw file parsing which Parser doesn't fully
-        // expose yet.
-        // Skipping comment ratio for now as it requires more complex parsing logic not
-        // yet in Parser.
     }
 }

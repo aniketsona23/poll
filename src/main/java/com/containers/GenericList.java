@@ -14,7 +14,7 @@ import java.util.Objects;
 public class GenericList<T> extends ListContainer<T> {
 
     public GenericList() {
-        super(); // elements is an ArrayList by default
+        super();
     }
 
     public void addFirst(T element) {
@@ -24,7 +24,7 @@ public class GenericList<T> extends ListContainer<T> {
     }
 
     public void addLast(T element) {
-        add(element); // append
+        add(element);
     }
 
     @Override
